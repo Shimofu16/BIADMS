@@ -10,7 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     try {
-        echo 'Login attempt';
         $conn = require 'database.php';
         // Sanitize input safely
         $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
