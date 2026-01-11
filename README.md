@@ -1,5 +1,6 @@
 Barangay Information and Aid Distribution Management System
 
+
 ---
 
 Installation Guide
@@ -29,13 +30,17 @@ Or download and extract the ZIP file.
 
 3. Configure the Database
 
-1. Create a database (e.g. biadms‎)
+1. Create a database (e.g. biadms)
 
 
 2. Import the provided SQL file
 
 
-3. Set Up the Project
+
+
+---
+
+4. Set Up the Project
 
 Place the project inside your web server directory:
 
@@ -51,4 +56,4 @@ www/ (Laragon)
 
 Open your browser and navigate to:
 
-http://localhost/biadms‎
+http://localhost/biadms
