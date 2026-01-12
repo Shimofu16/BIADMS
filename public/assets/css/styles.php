@@ -53,3 +53,10 @@
         }
     }
 </script>
+
+<style>
+    input {
+        /* rounded-md - tailwind*/
+        border-radius: 0.375rem !important;
+    }
+</style>

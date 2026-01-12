@@ -19,7 +19,7 @@ $user = [
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile - <?php echo $user['name']; ?></title>
+    <title>Profile - <?php echo ucfirst($user['name']); ?></title>
     <?php include '../public/assets/css/styles.php'; ?>
 </head>
 
