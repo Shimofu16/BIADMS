@@ -5,7 +5,11 @@
 
 <?php 
     if(isset($_SESSION['alert'])){
-        session_start();
+        // checking if session is started
+        if (!session_id()) {
+            session_start();
+        }
+
         $alert = $_SESSION['alert'];
         unset($_SESSION['alert']);
         echo "

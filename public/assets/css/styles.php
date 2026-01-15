@@ -55,7 +55,7 @@
 </script>
 
 <style>
-    input {
+    input , select{
         /* rounded-md - tailwind*/
         border-radius: 0.375rem !important;
     }

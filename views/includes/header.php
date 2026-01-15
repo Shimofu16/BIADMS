@@ -377,9 +377,18 @@
 
                 <ul class="py-1 text-gray-700 dark:text-gray-300" aria-labelledby="dropdown">
                     <li>
-                        <a href="#"
-                            class="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sign
-                            out</a>
+                        <?php
+                        // check if url is dashboard or profile
+                        $current_page = basename($_SERVER['PHP_SELF']);
+                        $logout_action = ($current_page === 'dashboard.php') ? '../config/auth.php' : '../../config/auth.php';
+                        ?>
+                        <form action="<?= $logout_action ?>" method="post" style="margin:0;">
+                            <input type="hidden" name="logout" value="1">
+                            <button type="submit"
+                                class="block w-full text-left py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white bg-transparent border-0 cursor-pointer">
+                                Sign out
+                            </button>
+                        </form>
                     </li>
                 </ul>
             </div>

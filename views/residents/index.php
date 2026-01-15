@@ -30,7 +30,7 @@ $barangays = $barangayStmt->fetchAll();
 </head>
 
 <body>
-    <div class="antialiased bg-gray-50 dark:bg-gray-900">
+    <div class="antialiased">
 
         <?php include '../includes/header.php'; ?>
 
@@ -38,9 +38,16 @@ $barangays = $barangayStmt->fetchAll();
         <?php include '../includes/sidebar.php'; ?>
 
         <main class="p-4 md:ml-64 h-auto pt-20">
+            <div class="flex items-center justify-between mb-4">
+                <h1 class="text-2xl font-semibold text-heading">Residents</h1>
+                <button
+                    onclick="location.href='create.php'"
+                    class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    Add Resident
+                </button>
+            </div>
 
-
-            <div class="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default">
+            <div class="relative overflow-x-auto shadow-xs rounded-md border border-default">
                 <form id="filterForm" class="p-4 flex flex-wrap gap-3 items-center justify-end">
                     <input type="text" name="search" placeholder="Search resident"
                         id="searchInput"
@@ -90,7 +97,19 @@ $barangays = $barangayStmt->fetchAll();
                 <div id="pagination" class="p-4 flex gap-2"></div>
 
 
-
+                <div id="familyModal" class="fixed inset-0 bg-black bg-opacity-50 hidden">
+                    <div
+                        class="bg-white rounded-md shadow-lg max-w-md mx-auto mt-20 p-6 relative">
+                        <button
+                            onclick="closeFamilyModal()"
+                            class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 focus:outline-none">
+                            &times;
+                        </button>
+                        <h2 class="text-xl font-semibold mb-4">Family Members</h2>
+                        <div id="familyList" class="space-y-2">
+                            <!-- Family members loaded here -->
+                        </div>
+                    </div>
             </div>
 
         </main>
@@ -138,16 +157,10 @@ $barangays = $barangayStmt->fetchAll();
 
             data.forEach((r, index) => {
                 tbody.innerHTML += `
-        <tr class="bg-neutral-primary-soft border-b border-default hover:bg-neutral-secondary-medium">
-            // <td class="w-4 p-4">
-            //     <input type="checkbox"
-            //         class="rowCheckbox w-4 h-4 border border-default-medium rounded-xs bg-neutral-secondary-medium focus:ring-2 focus:ring-brand-soft"
-            //         value="${r.id}">
-            // </td>
-
+        <tr class="bg-neutral-primary-soft border-b border-default hover:bg-neutral-secondary-md">
             <th scope="row"
-                class="px-6 py-4 font-medium text-heading whitespace-nowrap">
-                ${r.last_name}, ${r.first_name}
+                class="px-6 py-4 font-md text-md whitespace-nowrap">
+                ${r.last_name}, ${r.first_name} ${r.middle_name ? r.middle_name.charAt(0) + '.' : ''}
             </th>
 
             <td class="px-6 py-4">${r.gender}</td>
@@ -159,7 +172,7 @@ $barangays = $barangayStmt->fetchAll();
             <td class="px-6 py-4">
                 <button
                     onclick="loadFamily(${r.id})"
-                    class="font-medium text-fg-brand hover:underline">
+                    class="font-md text-fg-brand hover:underline">
                     View Family
                 </button>
             </td>
@@ -175,18 +188,16 @@ $barangays = $barangayStmt->fetchAll();
                 container.innerHTML += `
             <button 
                 onclick="loadResidents(${i})"
-                class="px-3 py-1 rounded ${i === p.page ? 'bg-primary text-white' : 'bg-gray-200'
+                class="px-3 py-1 rounded ${i === p.page ? 'bg-blue-600 text-white' : 'bg-gray-200'
                     }">
                 ${i}
             </button>`;
             }
         }
 
-        /* ===============================
-           FAMILY MODAL
-        =============================== */
+       
         function loadFamily(residentId) {
-            fetch(`../modules/residents.php?action=family_members&resident_id=${residentId}`)
+            fetch(`../../modules/residents.php?action=family_members&resident_id=${residentId}`)
                 .then(res => res.json())
                 .then(res => {
                     const list = document.getElementById('familyList');
@@ -212,9 +223,7 @@ $barangays = $barangayStmt->fetchAll();
             document.getElementById('familyModal').classList.add('hidden');
         }
 
-        /* ===============================
-           INITIAL LOAD
-        =============================== */
+
         document.addEventListener('DOMContentLoaded', () => {
             loadResidents();
 
