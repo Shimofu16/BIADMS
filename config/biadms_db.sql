@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 12, 2026 at 03:43 AM
+-- Generation Time: Jan 16, 2026 at 04:47 AM
 -- Server version: 8.4.3
 -- PHP Version: 8.3.28
 
@@ -35,6 +35,13 @@ CREATE TABLE `barangays` (
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Dumping data for table `barangays`
+--
+
+INSERT INTO `barangays` (`id`, `name`, `logo`, `created_at`, `updated_at`) VALUES
+(1, 'Barangay 1', NULL, '2026-01-15 13:56:34', '2026-01-15 13:56:34');
+
 -- --------------------------------------------------------
 
 --
@@ -52,9 +59,16 @@ CREATE TABLE `family_members` (
   `relationship` enum('spouse','child','parent','sibling','grandparent','relative','other') NOT NULL,
   `civil_status` enum('single','married','widowed','separated') DEFAULT 'single',
   `occupation` varchar(150) DEFAULT NULL,
-  `is_dependent` tinyint(1) DEFAULT '1',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `family_members`
+--
+
+INSERT INTO `family_members` (`id`, `resident_id`, `first_name`, `middle_name`, `last_name`, `gender`, `birth_date`, `relationship`, `civil_status`, `occupation`, `created_at`) VALUES
+(1, 29, 'Rafael', 'Brett Hoffman', 'Osborne', 'female', '1981-05-01', 'grandparent', 'widowed', 'Ipsum ut qui rem do', '2026-01-16 02:26:04'),
+(2, 30, 'Audrey', 'Basia Dunn', 'Talley', 'male', '1984-10-08', 'other', 'married', 'Ipsum in incididunt', '2026-01-16 03:31:32');
 
 -- --------------------------------------------------------
 
@@ -75,11 +89,20 @@ CREATE TABLE `residents` (
   `contact_number` varchar(20) DEFAULT NULL,
   `address` text NOT NULL,
   `occupation` varchar(150) DEFAULT NULL,
-  `monthly_income` decimal(10,2) DEFAULT NULL,
   `created_by` int UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `residents`
+--
+
+INSERT INTO `residents` (`id`, `household_no`, `barangay_id`, `first_name`, `middle_name`, `last_name`, `gender`, `birth_date`, `civil_status`, `contact_number`, `address`, `occupation`, `created_by`, `created_at`, `updated_at`) VALUES
+(1, 'Voluptates nemo quae', 1, 'Holmes', 'Baker Huber', 'Hill', 'female', '1999-10-13', 'widowed', '419', 'Qui id deserunt eaqu', 'Consectetur voluptat', NULL, '2026-01-15 14:26:14', '2026-01-15 14:26:14'),
+(2, 'Eaque ut alias tenet', 1, 'Jack', 'Steven Chandler', 'Rogers', 'male', '1981-04-03', 'widowed', '996', 'Aut ut nisi ex tempo', 'Ea qui ipsum volupta', NULL, '2026-01-15 14:42:22', '2026-01-15 14:42:22'),
+(29, 'Sed ad soluta id co', 1, 'Jana', 'Signe Gallegos', 'Wall', 'female', '2019-05-18', 'single', '32', 'Et eaque ea est moll', 'Soluta vel adipisci', NULL, '2026-01-16 02:26:04', '2026-01-16 02:26:04'),
+(30, 'Praesentium non dolo', 1, 'Meghan', 'Honorato Goodwin', 'Gillespie', 'male', '2025-10-29', 'widowed', '426', 'Blanditiis amet dui', 'Laudantium voluptat', NULL, '2026-01-16 03:31:32', '2026-01-16 03:31:32');
 
 -- --------------------------------------------------------
 
@@ -147,19 +170,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `barangays`
 --
 ALTER TABLE `barangays`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `family_members`
 --
 ALTER TABLE `family_members`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `residents`
 --
 ALTER TABLE `residents`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `users`
