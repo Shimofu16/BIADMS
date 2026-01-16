@@ -227,12 +227,20 @@ $barangays = $barangayStmt->fetchAll();
                 class="w-full p-2 text-sm border rounded-md">
         </div>
         <div>
-            <label class="block text-xs font-medium mb-1">Relationship</label>
-            <input type="text"
-                name="family[${currentIndex}][relationship]"
-                placeholder="e.g., Spouse, Child"
-                class="w-full p-2 text-sm border rounded-md">
-        </div>
+    <label class="block text-xs font-medium mb-1">Relationship</label>
+    <select name="family[${currentIndex}][relationship]"
+        class="w-full p-2 text-sm border rounded-md">
+        <option value="">Select Relationship</option>
+        <option value="Spouse">Spouse</option>
+        <option value="Child">Child</option>
+        <option value="Father">Father</option>
+        <option value="Mother">Mother</option>
+        <option value="Sibling">Sibling</option>
+        <option value="Grandparent">Grandparent</option>
+        <option value="Other">Other</option>
+    </select>
+</div>
+
         <div>
             <label class="block text-xs font-medium mb-1">Civil Status</label>
             <select name="family[${currentIndex}][civil_status]"

@@ -40,8 +40,7 @@ $barangays = $barangayStmt->fetchAll();
         <main class="p-4 md:ml-64 h-auto pt-20">
             <div class="flex items-center justify-between mb-4">
                 <h1 class="text-2xl font-semibold text-heading">Residents</h1>
-                <button
-                    onclick="location.href='create.php'"
+                <button onclick="location.href='create.php'"
                     class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                     Add Resident
                 </button>
@@ -49,22 +48,17 @@ $barangays = $barangayStmt->fetchAll();
 
             <div class="relative overflow-x-auto shadow-xs rounded-md border border-default">
                 <form id="filterForm" class="p-4 flex flex-wrap gap-3 items-center justify-end">
-                    <input type="text" name="search" placeholder="Search resident"
-                        id="searchInput"
+                    <input type="text" name="search" placeholder="Search resident" id="searchInput"
                         class="block w-full max-w-96 px-3 py-2 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body">
 
-                    <select name="barangay_id" class="px-3 py-2 border rounded-base text-sm"
-                        id="barangayFilter"
-                    >
+                    <select name="barangay_id" class="px-3 py-2 border rounded-base text-sm" id="barangayFilter">
                         <option value="">All Barangays</option>
                         <?php foreach ($barangays as $b): ?>
                             <option value="<?= $b['id'] ?>"><?= htmlspecialchars($b['name']) ?></option>
                         <?php endforeach; ?>
                     </select>
 
-                    <select name="civil_status" class="px-3 py-2 border rounded-base text-sm"
-                        id="civilStatusFilter"
-                    >
+                    <select name="civil_status" class="px-3 py-2 border rounded-base text-sm" id="civilStatusFilter">
                         <option value="">All Civil Status</option>
                         <option value="single">Single</option>
                         <option value="married">Married</option>
@@ -97,19 +91,47 @@ $barangays = $barangayStmt->fetchAll();
                 <div id="pagination" class="p-4 flex gap-2"></div>
 
 
-                <div id="familyModal" class="fixed inset-0 bg-black bg-opacity-50 hidden">
-                    <div
-                        class="bg-white rounded-md shadow-lg max-w-md mx-auto mt-20 p-6 relative">
-                        <button
-                            onclick="closeFamilyModal()"
-                            class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 focus:outline-none">
-                            &times;
-                        </button>
-                        <h2 class="text-xl font-semibold mb-4">Family Members</h2>
-                        <div id="familyList" class="space-y-2">
-                            <!-- Family members loaded here -->
+                <div id="familyModal" tabindex="-1" aria-hidden="true"
+                    class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+
+                    <div class="relative w-full max-w-2xl max-h-full p-4">
+
+                        <div class="bg-white border border-gray-300 rounded-md shadow-md">
+
+                            <!-- Header -->
+                            <div class="flex items-center justify-between border-b border-gray-300 px-4 py-3">
+                                <h3 class="text-lg font-medium text-gray-900">
+                                    Family Members
+                                </h3>
+
+                                <button type="button" onclick="closeFamilyModal()"
+                                    class="text-gray-500 hover:text-gray-900 w-9 h-9 flex items-center justify-center">
+                                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                    <span class="sr-only">Close modal</span>
+                                </button>
+                            </div>
+
+                            <!-- Body -->
+                            <div class="p-4 space-y-4" id="familyList">
+                                <!-- Dynamic family rows go here -->
+                            </div>
+
+                            <!-- Footer -->
+                            <div class="flex justify-end border-t border-gray-300 px-4 py-3">
+                                <button type="button" onclick="closeFamilyModal()"
+                                    class="px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100">
+                                    Close
+                                </button>
+                            </div>
+
                         </div>
                     </div>
+                </div>
+
             </div>
 
         </main>
@@ -172,8 +194,14 @@ $barangays = $barangayStmt->fetchAll();
             <td class="px-6 py-4">
                 <button
                     onclick="loadFamily(${r.id})"
-                    class="font-md text-fg-brand hover:underline">
+                    class="px-3 py-1 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
                     View Family
+                </button>
+
+                <button
+                    onclick="location.href='edit.php?id=${r.id}'"
+                    class="px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    Edit
                 </button>
             </td>
         </tr>`;
@@ -195,7 +223,7 @@ $barangays = $barangayStmt->fetchAll();
             }
         }
 
-       
+
         function loadFamily(residentId) {
             fetch(`../../modules/residents.php?action=family_members&resident_id=${residentId}`)
                 .then(res => res.json())
