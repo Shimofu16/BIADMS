@@ -91,15 +91,12 @@ $user = [
 
                         row.innerHTML = `
                             <td class="px-6 py-4">
-                                <img src="${barangay.logo_url}" alt="Logo" class="w-10 h-10 rounded-full object-cover">
+                                <img src="../../public/${barangay.logo}" alt="Logo" class="w-10 h-10 rounded-full object-cover">
                             </td>
                             <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">${barangay.name}</td>
-                            <td class="px-6 py-4">${barangay.residents_count}</td>
+                            <td class="px-6 py-4">${barangay.total_residents + barangay.total_family_members}</td>
                             <td class="px-6 py-4">
-                                <button onclick="location.href='view.php?barangay_id=${barangay.id}'"
-                                    class="px-3 py-1 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
-                                    View
-                                </button>
+
                                 <button onclick="location.href='edit.php?barangay_id=${barangay.id}'"
                                     class="px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                                     Edit
