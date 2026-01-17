@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 16, 2026 at 04:47 AM
+-- Generation Time: Jan 17, 2026 at 08:44 AM
 -- Server version: 8.4.3
 -- PHP Version: 8.3.28
 
@@ -40,7 +40,13 @@ CREATE TABLE `barangays` (
 --
 
 INSERT INTO `barangays` (`id`, `name`, `logo`, `created_at`, `updated_at`) VALUES
-(1, 'Barangay 1', NULL, '2026-01-15 13:56:34', '2026-01-15 13:56:34');
+(1, 'Barangay 1', 'uploads/barangay_logos/barangay_696b490ec129c9.05037582.jpeg', '2026-01-15 13:56:34', '2026-01-17 08:32:14'),
+(2, 'Melinda Downs1234', NULL, '2026-01-17 06:45:48', '2026-01-17 06:45:48'),
+(3, 'qweqwe', NULL, '2026-01-17 06:46:36', '2026-01-17 06:46:36'),
+(5, 'qweqweqweqwe', NULL, '2026-01-17 06:47:30', '2026-01-17 06:47:30'),
+(7, 'qweq', NULL, '2026-01-17 07:26:21', '2026-01-17 07:26:21'),
+(10, 'qweqweqweqwtrqwtqweqwe', 'uploads/barangay_logos/barangay_696b49e6c639a5.57036848.jpeg', '2026-01-17 08:35:50', '2026-01-17 08:35:50'),
+(11, 'asdq2313123123', 'uploads/barangay_logos/barangay_696b4a5cf413f0.11699078.jpeg', '2026-01-17 08:37:49', '2026-01-17 08:37:49');
 
 -- --------------------------------------------------------
 
@@ -170,7 +176,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `barangays`
 --
 ALTER TABLE `barangays`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `family_members`
