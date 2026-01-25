@@ -64,66 +64,106 @@ $barangays = $pdo->query("SELECT * FROM barangays ORDER BY name")->fetchAll();
                             <h2 class="text-lg font-semibold mb-4">Resident Information (Head of the Family)</h2>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <input type="text" name="household_no"
-                                    value="<?= htmlspecialchars($resident['household_no']) ?>"
-                                    class="w-full p-2 border rounded-md">
+                                <div>
+                                    <label class="block text-xs font-medium mb-1">Household No.</label>
+                                    <input type="text" name="household_no"
+                                        value="<?= htmlspecialchars($resident['household_no']) ?>"
+                                        class="w-full p-2 border rounded-md">
+                                </div>
 
-                                <select name="barangay_id" class="w-full p-2 border rounded-md">
-                                    <option value="">Select Barangay</option>
-                                    <?php foreach ($barangays as $b): ?>
-                                        <option value="<?= $b['id'] ?>" <?= $resident['barangay_id'] == $b['id'] ? 'selected' : '' ?>>
-                                            <?= htmlspecialchars($b['name']) ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
+                                <div>
+                                    <label class="block text-xs font-medium mb-1">Barangay</label>
+                                    <select name="barangay_id" class="w-full p-2 border rounded-md">
+                                        <option value="">Select Barangay</option>
+                                        <?php foreach ($barangays as $b): ?>
+                                            <option value="<?= $b['id'] ?>" <?= $resident['barangay_id'] == $b['id'] ? 'selected' : '' ?>>
+                                                <?= htmlspecialchars($b['name']) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
                             </div>
+
 
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                                <input type="text" name="first_name"
-                                    value="<?= htmlspecialchars($resident['first_name']) ?>"
-                                    class="w-full p-2 border rounded-md">
-                                <input type="text" name="middle_name"
-                                    value="<?= htmlspecialchars($resident['middle_name']) ?>"
-                                    class="w-full p-2 border rounded-md">
-                                <input type="text" name="last_name"
-                                    value="<?= htmlspecialchars($resident['last_name']) ?>"
-                                    class="w-full p-2 border rounded-md">
+                                <div>
+                                    <label class="block text-xs font-medium mb-1">First Name</label>
+                                    <input type="text" name="first_name"
+                                        value="<?= htmlspecialchars($resident['first_name']) ?>"
+                                        class="w-full p-2 border rounded-md">
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-medium mb-1">Middle Name</label>
+                                    <input type="text" name="middle_name"
+                                        value="<?= htmlspecialchars($resident['middle_name']) ?>"
+                                        class="w-full p-2 border rounded-md">
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-medium mb-1">Last Name</label>
+                                    <input type="text" name="last_name"
+                                        value="<?= htmlspecialchars($resident['last_name']) ?>"
+                                        class="w-full p-2 border rounded-md">
+                                </div>
                             </div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                                <select name="gender" class="w-full p-2 border rounded-md">
-                                    <option value="">Select</option>
-                                    <option value="Male" <?= $resident['gender'] == 'Male' ? 'selected' : '' ?>>Male
-                                    </option>
-                                    <option value="Female" <?= $resident['gender'] == 'Female' ? 'selected' : '' ?>>Female
-                                    </option>
-                                </select>
-
-                                <input type="date" name="birth_date" value="<?= $resident['birth_date'] ?>"
-                                    class="w-full p-2 border rounded-md">
-                            </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                                <select name="civil_status" class="w-full p-2 border rounded-md">
-                                    <option value="">Select</option>
-                                    <?php foreach (['Single', 'Married', 'Widowed', 'Separated'] as $s): ?>
-                                        <option value="<?= $s ?>" <?= $resident['civil_status'] == $s ? 'selected' : '' ?>>
-                                            <?= $s ?>
+                                <div>
+                                    <label class="block text-xs font-medium mb-1">Gender</label>
+                                    <select name="gender" class="w-full p-2 border rounded-md">
+                                        <option value="">Select</option>
+                                        <option value="Male" <?= $resident['gender'] == 'Male' ? 'selected' : '' ?>>Male
                                         </option>
-                                    <?php endforeach; ?>
-                                </select>
+                                        <option value="Female" <?= $resident['gender'] == 'Female' ? 'selected' : '' ?>>
+                                            Female</option>
+                                    </select>
+                                </div>
 
-                                <input type="text" name="contact_number"
-                                    value="<?= htmlspecialchars($resident['contact_number']) ?>"
-                                    class="w-full p-2 border rounded-md">
+                                <div>
+                                    <label class="block text-xs font-medium mb-1">Birth Date</label>
+                                    <input type="date" name="birth_date" value="<?= $resident['birth_date'] ?>"
+                                        class="w-full p-2 border rounded-md">
+                                </div>
                             </div>
 
+
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                                <textarea name="address" rows="2"
-                                    class="w-full p-2 border rounded-md"><?= htmlspecialchars($resident['address']) ?></textarea>
-                                <input type="text" name="occupation"
-                                    value="<?= htmlspecialchars($resident['occupation']) ?>"
-                                    class="w-full p-2 border rounded-md">
+                                <div>
+                                    <label class="block text-xs font-medium mb-1">Civil Status</label>
+                                    <select name="civil_status" class="w-full p-2 border rounded-md">
+                                        <option value="">Select</option>
+                                        <?php foreach (['Single', 'Married', 'Widowed', 'Separated'] as $s): ?>
+                                            <option value="<?= $s ?>" <?= $resident['civil_status'] == $s ? 'selected' : '' ?>>
+                                                <?= $s ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-medium mb-1">Contact Number</label>
+                                    <input type="text" name="contact_number"
+                                        value="<?= htmlspecialchars($resident['contact_number']) ?>"
+                                        class="w-full p-2 border rounded-md">
+                                </div>
+                            </div>
+
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                                <div>
+                                    <label class="block text-xs font-medium mb-1">Address</label>
+                                    <textarea name="address" rows="2"
+                                        class="w-full p-2 border rounded-md"><?= htmlspecialchars($resident['address']) ?></textarea>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-medium mb-1">Occupation</label>
+                                    <input type="text" name="occupation"
+                                        value="<?= htmlspecialchars($resident['occupation']) ?>"
+                                        class="w-full p-2 border rounded-md">
+                                </div>
                             </div>
                         </div>
 
@@ -139,54 +179,84 @@ $barangays = $pdo->query("SELECT * FROM barangays ORDER BY name")->fetchAll();
 
                             <div id="familyContainer" class="space-y-3">
                                 <?php foreach ($familyMembers as $i => $f): ?>
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border p-3 rounded-md family-row"
-                                        data-index="<?= $i ?>">
+                                    <div class="grid family-row" data-index="<?= $i ?>">
 
-                                        <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
-                                            <input type="text" name="family[<?= $i ?>][first_name]"
-                                                value="<?= htmlspecialchars($f['first_name']) ?>"
-                                                class="w-full p-2 text-sm border rounded-md" required>
-                                            <input type="text" name="family[<?= $i ?>][middle_name]"
-                                                value="<?= htmlspecialchars($f['middle_name']) ?>"
-                                                class="w-full p-2 text-sm border rounded-md">
-                                            <input type="text" name="family[<?= $i ?>][last_name]"
-                                                value="<?= htmlspecialchars($f['last_name']) ?>"
-                                                class="w-full p-2 text-sm border rounded-md" required>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border p-3 rounded-md "
+                                            data-index="<?= $i ?>">
+    
+                                            <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                <div>
+                                                    <label class="block text-xs font-medium mb-1">First Name</label>
+                                                    <input type="text" name="family[<?= $i ?>][first_name]"
+                                                        value="<?= htmlspecialchars($f['first_name']) ?>"
+                                                        class="w-full p-2 text-sm border rounded-md" required>
+                                                </div>
+    
+                                                <div>
+                                                    <label class="block text-xs font-medium mb-1">Middle Name</label>
+                                                    <input type="text" name="family[<?= $i ?>][middle_name]"
+                                                        value="<?= htmlspecialchars($f['middle_name']) ?>"
+                                                        class="w-full p-2 text-sm border rounded-md">
+                                                </div>
+    
+                                                <div>
+                                                    <label class="block text-xs font-medium mb-1">Last Name</label>
+                                                    <input type="text" name="family[<?= $i ?>][last_name]"
+                                                        value="<?= htmlspecialchars($f['last_name']) ?>"
+                                                        class="w-full p-2 text-sm border rounded-md" required>
+                                                </div>
+                                            </div>
+    
+                                            <div>
+                                                <label class="block text-xs font-medium mb-1">Gender</label>
+                                                <select name="family[<?= $i ?>][gender]"
+                                                    class="w-full p-2 text-sm border rounded-md">
+                                                    <option value="">Select Gender</option>
+                                                    <option value="male" <?= $f['gender'] == 'male' ? 'selected' : '' ?>>Male
+                                                    </option>
+                                                    <option value="female" <?= $f['gender'] == 'female' ? 'selected' : '' ?>>Female
+                                                    </option>
+                                                </select>
+                                            </div>
+    
+                                            <div>
+                                                <label class="block text-xs font-medium mb-1">Birth Date</label>
+                                                <input type="date" name="family[<?= $i ?>][birth_date]"
+                                                    value="<?= $f['birth_date'] ?>"
+                                                    class="w-full p-2 text-sm border rounded-md">
+                                            </div>
+    
+                                            <div>
+                                                <label class="block text-xs font-medium mb-1">Relationship</label>
+                                                <select name="family[<?= $i ?>][relationship]"
+                                                    class="w-full p-2 text-sm border rounded-md">
+                                                    <?php foreach (['Spouse', 'Child', 'Father', 'Mother', 'Sibling', 'Grandparent', 'Other'] as $r): ?>
+                                                        <option value="<?= $r ?>" <?= $f['relationship'] === $r ? 'selected' : '' ?>>
+                                                            <?= $r ?>
+                                                        </option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+    
+                                            <div>
+                                                <label class="block text-xs font-medium mb-1">Civil Status</label>
+                                                <select name="family[<?= $i ?>][civil_status]"
+                                                    class="w-full p-2 text-sm border rounded-md">
+                                                    <?php foreach (['Single', 'Married', 'Widowed', 'Separated'] as $s): ?>
+                                                        <option value="<?= $s ?>" <?= $f['civil_status'] === $s ? 'selected' : '' ?>>
+                                                            <?= $s ?>
+                                                        </option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+    
+                                            <div>
+                                                <label class="block text-xs font-medium mb-1">Occupation</label>
+                                                <input type="text" name="family[<?= $i ?>][occupation]"
+                                                    value="<?= htmlspecialchars($f['occupation']) ?>"
+                                                    class="w-full p-2 text-sm border rounded-md">
+                                          </div>
                                         </div>
-
-                                        <select name="family[<?= $i ?>][gender]"
-                                            class="w-full p-2 text-sm border rounded-md">
-                                            <option value="">Select Gender</option>
-                                            <option value="male" <?= $f['gender'] == 'male' ? 'selected' : '' ?>>Male</option>
-                                            <option value="female" <?= $f['gender'] == 'female' ? 'selected' : '' ?>>Female
-                                            </option>
-                                        </select>
-
-                                        <input type="date" name="family[<?= $i ?>][birth_date]"
-                                            value="<?= $f['birth_date'] ?>" class="w-full p-2 text-sm border rounded-md">
-
-                                        <select name="family[<?= $i ?>][relationship]"
-                                            class="w-full p-2 text-sm border rounded-md">
-                                            <?php foreach (['Spouse', 'Child', 'Father', 'Mother', 'Sibling', 'Grandparent', 'Other'] as $r): ?>
-                                                <option value="<?= $r ?>" <?= $f['relationship'] === $r ? 'selected' : '' ?>>
-                                                    <?= $r ?>
-                                                </option>
-                                            <?php endforeach; ?>
-                                        </select>
-
-                                        <select name="family[<?= $i ?>][civil_status]"
-                                            class="w-full p-2 text-sm border rounded-md">
-                                            <?php foreach (['Single', 'Married', 'Widowed', 'Separated'] as $s): ?>
-                                                <option value="<?= $s ?>" <?= $f['civil_status'] === $s ? 'selected' : '' ?>>
-                                                    <?= $s ?>
-                                                </option>
-                                            <?php endforeach; ?>
-                                        </select>
-
-                                        <input type="text" name="family[<?= $i ?>][occupation]"
-                                            value="<?= htmlspecialchars($f['occupation']) ?>"
-                                            class="w-full p-2 text-sm border rounded-md">
-
                                         <div class="flex items-end">
                                             <button type="button" onclick="this.closest('.family-row').remove()"
                                                 class="px-3 py-2 bg-red-600 text-white rounded-md mt-6">
@@ -194,6 +264,7 @@ $barangays = $pdo->query("SELECT * FROM barangays ORDER BY name")->fetchAll();
                                             </button>
                                         </div>
                                     </div>
+                                    <hr class="my-3">
                                 <?php endforeach; ?>
 
                             </div>
@@ -224,10 +295,12 @@ $barangays = $pdo->query("SELECT * FROM barangays ORDER BY name")->fetchAll();
             const currentIndex = familyIndex;
 
             const div = document.createElement('div');
-            div.className = 'grid grid-cols-1 md:grid-cols-2 gap-4 border p-3 rounded-md family-row';
+            div.className = 'grid flex-wrap';
+
             div.setAttribute('data-index', currentIndex);
 
             div.innerHTML = `
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border p-3 rounded-md ">
                 <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                         <label class="block text-xs font-medium mb-1">First Name <span class="text-red-500">*</span></label>
@@ -300,17 +373,21 @@ $barangays = $pdo->query("SELECT * FROM barangays ORDER BY name")->fetchAll();
                         name="family[${currentIndex}][occupation]"
                         class="w-full p-2 text-sm border rounded-md">
                 </div>
-
-                <div class="flex items-end">
-                    <button type="button"
-                        onclick="this.closest('.family-row').remove()"
-                        class="px-3 py-2 text-sm text-white bg-red-600 rounded-md mt-6">
-                        Remove
-                    </button>
-                </div>
+            </div>
+            <div class="flex items-end">
+                <button type="button" onclick="this.closest('.family-row').remove()"
+                    class="px-3 py-2 bg-red-600 text-white rounded-md mt-6">
+                    Remove
+                </button>
+            </div>
             `;
 
             container.appendChild(div);
+                                                        // add hr aftrer 
+            const hr = document.createElement('hr');
+            hr.className = 'my-3';
+            container.appendChild(hr);
+
             familyIndex++;
         }
 

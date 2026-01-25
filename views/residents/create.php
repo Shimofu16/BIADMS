@@ -182,10 +182,11 @@ $barangays = $barangayStmt->fetchAll();
             const currentIndex = familyIndex;
 
             const div = document.createElement('div');
-            div.className = 'grid grid-cols-1 md:grid-cols-2 gap-4 border p-3 rounded-md family-row';
+            div.className = 'grid family-row';
             div.setAttribute('data-index', currentIndex);
 
             div.innerHTML = `
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border p-3 rounded-md ">
         <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
                 <label class="block text-xs font-medium mb-1">First Name <span class="text-red-500">*</span></label>
@@ -259,6 +260,7 @@ $barangays = $barangayStmt->fetchAll();
                 placeholder="Occupation"
                 class="w-full p-2 text-sm border rounded-md">
         </div>
+                  </div>
         <div class="flex items-end">
             <button type="button"
                 onclick="this.closest('.family-row').remove()"
@@ -269,6 +271,10 @@ $barangays = $barangayStmt->fetchAll();
     `;
 
             container.appendChild(div);
+
+            const hr = document.createElement('hr');
+            hr.className = 'my-3';
+            container.appendChild(hr);
             familyIndex++; // Increment after adding
         }
 
