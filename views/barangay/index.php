@@ -41,6 +41,11 @@ $user = [
             </div>
 
             <div class="relative overflow-x-auto shadow-xs rounded-md border border-default">
+                <!-- Filter form -->
+                <form id="filterForm" class="p-4 flex flex-wrap gap-3 items-center justify-end">
+                    <input type="text" name="search" placeholder="Search barangay" id="search"
+                        class="block w-full max-w-96 px-3 py-2 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body">
+                </form>
 
                 <!-- TABLE -->
                 <table class="w-full text-sm text-left text-body">
@@ -72,61 +77,35 @@ $user = [
 
     <?php include '../../public/assets/js/js.php'; ?>
 
+    <script src="../../public/assets/js/table.js"></script>
+
     <script>
-        function loadBarangays(page) {
-            const params = new URLSearchParams({
-                action: 'load_barangays',
-                page,
-            });
-            fetch(`../../modules/barangay.php?${params}`)
-                .then(response => response.json())
-                .then(res => {
-                    const barangayTable = document.getElementById('barangayTable');
-                    barangayTable.innerHTML = '';
-                   
-                    
-                    res.data.forEach(barangay => {
-                        const row = document.createElement('tr');
-                        row.classList.add('border-b', 'hover:bg-gray-50', 'dark:hover:bg-gray-600');
-
-                        row.innerHTML = `
-                            <td class="px-6 py-4">
-                                <img src="../../public/${barangay.logo}" alt="Logo" class="w-10 h-10 rounded-full object-cover">
-                            </td>
-                            <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">${barangay.name}</td>
-                            <td class="px-6 py-4">${barangay.total_residents + barangay.total_family_members}</td>
-                            <td class="px-6 py-4">
-
-                                <button onclick="location.href='edit.php?barangay_id=${barangay.id}'"
-                                    class="px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                                    Edit
-                                </button>
-                            </td>
-                        `;
-
-                        barangayTable.appendChild(row);
-                    });
-
-                    // Pagination
-                    const pagination = document.getElementById('pagination');
-                    pagination.innerHTML = '';
-                    for (let i = 1; i <= res.pagination.pages; i++) {
-                        const pageBtn = document.createElement('button');
-                        pageBtn.textContent = i;
-                        pageBtn.classList.add('px-3', 'py-1', 'rounded-md', 'focus:outline-none', 'focus:ring-2', 'focus:ring-blue-500', 'focus:ring-offset-2');
-                        if (i === res.pagination.page) {
-                            pageBtn.classList.add('bg-blue-600', 'text-white');
-                        } else {
-                            pageBtn.classList.add('bg-gray-200', 'text-gray-700', 'hover:bg-gray-300');
-                            pageBtn.onclick = () => loadBarangays(i);
-                        }
-                        pagination.appendChild(pageBtn);
-                    }
-                })
-                .catch(error => console.error('Error fetching barangays:', error));
-        }
-        document.addEventListener('DOMContentLoaded', function () {
-            loadBarangays(1); // Load first page on initial load
+        PaginatedTable.init({
+            endpoint: '../../modules/barangay.php',
+            action: 'load_barangays',
+            paginationContnainer: 'pagination',
+            filters: [
+                'search',
+            ],
+            renderTable: function (data) {
+                const tableBody = document.getElementById('barangayTable');
+                tableBody.innerHTML = '';
+                data.forEach(row => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+            <td class="px-6 py-4">
+                ${row.logo ? `<img src="../../public/${row.logo}" alt="Logo" class="w-10 h-10 object-cover rounded-full">` : '<span class="text-gray-500">No Logo</span>'}
+            </td>
+            <td class="px-6 py-4">${row.name}</td>
+            <td class="px-6 py-4">${row.total_residents}</td>
+            <td class="px-6 py-4">
+                <button onclick="location.href='edit.php?id=${row.id}'" class="px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Edit</button>
+                <button onclick="deleteBarangay(${row.id})" class="px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">Delete</button>
+            </td>
+        `;
+                    tableBody.appendChild(tr);
+                });
+            }
         });
     </script>
 

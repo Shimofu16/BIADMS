@@ -1,3 +1,9 @@
+<?php
+// check if url is dashboard or profile
+$current_page = basename($_SERVER['PHP_SELF']);
+$logout_action = ($current_page === 'dashboard.php') ? '../config/auth.php' : '../../config/auth.php';
+$profile_page = ($current_page === 'dashboard.php') ? 'profile.php' : '../profile.php';
+?>
 <nav
     class="bg-white border-b border-gray-200 px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700 fixed left-0 right-0 top-0 z-50">
     <div class="flex flex-wrap justify-between items-center">
@@ -369,7 +375,7 @@
                 </div>
                 <ul class="py-1 text-gray-700 dark:text-gray-300" aria-labelledby="dropdown">
                     <li>
-                        <a href="profile.php"
+                        <a href="<?= $profile_page ?>"
                             class="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">My
                             profile</a>
                     </li>
@@ -377,11 +383,7 @@
 
                 <ul class="py-1 text-gray-700 dark:text-gray-300" aria-labelledby="dropdown">
                     <li>
-                        <?php
-                        // check if url is dashboard or profile
-                        $current_page = basename($_SERVER['PHP_SELF']);
-                        $logout_action = ($current_page === 'dashboard.php') ? '../config/auth.php' : '../../config/auth.php';
-                        ?>
+
                         <form action="<?= $logout_action ?>" method="post" style="margin:0;">
                             <input type="hidden" name="logout" value="1">
                             <button type="submit"

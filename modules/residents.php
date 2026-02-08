@@ -32,56 +32,81 @@ try {
             $where = [];
             $params = [];
 
+            /* ✅ SEARCH FIX — UNIQUE PLACEHOLDERS */
             if ($search !== '') {
-                $where[] = "(r.first_name LIKE :search OR r.last_name LIKE :search)";
-                $params['search'] = "%$search%";
+
+                $where[] = "(
+            r.first_name LIKE :search_first
+            OR r.middle_name LIKE :search_middle
+            OR r.last_name LIKE :search_last
+            OR r.household_no LIKE :search_household
+        )";
+
+                $params[':search_first'] = "%$search%";
+                $params[':search_middle'] = "%$search%";
+                $params[':search_last'] = "%$search%";
+                $params[':search_household'] = "%$search%";
             }
 
             if ($barangay_id !== '') {
                 $where[] = "r.barangay_id = :barangay_id";
-                $params['barangay_id'] = $barangay_id;
+                $params[':barangay_id'] = (int) $barangay_id;
             }
 
             if ($civil_status !== '') {
                 $where[] = "r.civil_status = :civil_status";
-                $params['civil_status'] = $civil_status;
+                $params[':civil_status'] = $civil_status;
             }
 
             $whereSQL = $where ? 'WHERE ' . implode(' AND ', $where) : '';
 
-            /* Count */
+            /* COUNT */
             $countStmt = $pdo->prepare("
-                SELECT COUNT(*)
-                FROM residents r
-                $whereSQL
-            ");
-            $countStmt->execute($params);
+        SELECT COUNT(*)
+        FROM residents r
+        $whereSQL
+    ");
+
+            foreach ($params as $key => $val) {
+                $countStmt->bindValue(
+                    $key,
+                    $val,
+                    is_int($val) ? PDO::PARAM_INT : PDO::PARAM_STR
+                );
+            }
+
+            $countStmt->execute();
             $total = (int) $countStmt->fetchColumn();
 
-            /* Data */
+            /* DATA */
             $stmt = $pdo->prepare("
-                SELECT 
-                    r.id,
-                    r.household_no,
-                    r.first_name,
-                    r.last_name,
-                    r.middle_name,
-                    r.gender,
-                    r.civil_status,
-                    b.name AS barangay
-                FROM residents r
-                JOIN barangays b ON b.id = r.barangay_id
-                $whereSQL
-                ORDER BY r.last_name
-                LIMIT :limit OFFSET :offset
-            ");
+        SELECT 
+            r.id,
+            r.household_no,
+            r.first_name,
+            r.middle_name,
+            r.last_name,
+            r.gender,
+            r.civil_status,
+            b.name AS barangay
+        FROM residents r
+        JOIN barangays b ON b.id = r.barangay_id
+        $whereSQL
+        ORDER BY r.last_name
+        LIMIT :limit OFFSET :offset
+    ");
 
-            foreach ($params as $k => $v) {
-                $stmt->bindValue(":$k", $v);
+            foreach ($params as $key => $val) {
+                $stmt->bindValue(
+                    $key,
+                    $val,
+                    is_int($val) ? PDO::PARAM_INT : PDO::PARAM_STR
+                );
             }
 
             $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
             $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
             $stmt->execute();
 
             echo json_encode([

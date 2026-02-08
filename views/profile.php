@@ -71,7 +71,7 @@ $user = [
                             aria-describedby="file_input_help">
 
                         <p id="file_input_help" class="text-xs text-gray-500">
-                            SVG, PNG, JPG or GIF
+                            SVG, PNG or JPG
                         </p>
                     </div>
 

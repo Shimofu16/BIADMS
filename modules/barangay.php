@@ -18,34 +18,64 @@ error_log("Action received: " . $action);
 try {
     switch ($action) {
         case 'load_barangays':
+
             $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
             $limit = 10;
             $offset = ($page - 1) * $limit;
 
-            // Get total count
-            $countStmt = $pdo->query("SELECT COUNT(*) FROM barangays");
+            $search = trim($_GET['search'] ?? '');
+
+            $where = '';
+            $params = [];
+
+            /* ✅ SEARCH */
+            if ($search !== '') {
+                $where = "WHERE b.name LIKE :search_name";
+                $params[':search_name'] = "%{$search}%";
+            }
+
+            /* ✅ COUNT QUERY */
+            $countSql = "SELECT COUNT(*) FROM barangays b $where";
+            $countStmt = $pdo->prepare($countSql);
+
+            foreach ($params as $key => $val) {
+                $countStmt->bindValue($key, $val, PDO::PARAM_STR);
+            }
+
+            $countStmt->execute();
             $totalCount = (int) $countStmt->fetchColumn();
 
-            // Get paginated data
-            $stmt = $pdo->prepare("
-                SELECT 
-                    b.*, 
-                    (
-                        SELECT COUNT(*) 
-                        FROM residents r 
-                        WHERE r.barangay_id = b.id
-                    ) AS total_residents,
-                    (
-                        SELECT COUNT(*) 
-                        FROM family_members fm
-                        INNER JOIN residents r ON fm.resident_id = r.id
-                        WHERE r.barangay_id = b.id
-                    ) AS total_family_members
-                FROM barangays b
-                LIMIT :limit OFFSET :offset
-            ");
+
+            /* ✅ DATA QUERY */
+            $sql = "
+        SELECT 
+            b.*, 
+            (
+                SELECT COUNT(*) 
+                FROM residents r 
+                WHERE r.barangay_id = b.id
+            ) AS total_residents,
+            (
+                SELECT COUNT(*) 
+                FROM family_members fm
+                INNER JOIN residents r ON fm.resident_id = r.id
+                WHERE r.barangay_id = b.id
+            ) AS total_family_members
+        FROM barangays b
+        $where
+        ORDER BY b.name
+        LIMIT :limit OFFSET :offset
+    ";
+
+            $stmt = $pdo->prepare($sql);
+
+            foreach ($params as $key => $val) {
+                $stmt->bindValue($key, $val, PDO::PARAM_STR);
+            }
+
             $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
             $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
             $stmt->execute();
             $barangays = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -59,7 +89,9 @@ try {
                     'pages' => ceil($totalCount / $limit)
                 ]
             ]);
+
             break;
+
 
         case 'store_barangay':
 

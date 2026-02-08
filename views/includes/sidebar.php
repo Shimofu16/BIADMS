@@ -1,7 +1,7 @@
 <?php
-$isDashboard = false;
-if (strpos($_SERVER['REQUEST_URI'], 'dashboard.php') !== false) {
-    $isDashboard = true;
+$isViewOnFolder = false;
+if (strpos($_SERVER['REQUEST_URI'], 'dashboard.php') !== false || strpos($_SERVER['REQUEST_URI'], 'profile.php') !== false) {
+    $isViewOnFolder = true;
 }
 ?>
 
@@ -13,7 +13,7 @@ if (strpos($_SERVER['REQUEST_URI'], 'dashboard.php') !== false) {
         <ul class="space-y-2">
             <li>
                 <a href="<?php
-                echo $isDashboard ? 'dashboard.php' : '../dashboard.php';
+                echo $isViewOnFolder ? 'dashboard.php' : '../dashboard.php';
                 ?>"
                     class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                     <svg aria-hidden="true"
@@ -27,7 +27,7 @@ if (strpos($_SERVER['REQUEST_URI'], 'dashboard.php') !== false) {
             </li>
             <li>
                 <a href="<?php
-                echo $isDashboard ? 'barangay/index.php' : '../barangay/index.php';
+                echo $isViewOnFolder ? 'barangay/index.php' : '../barangay/index.php';
                 ?>"
                     class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                     <svg aria-hidden="true"
@@ -42,7 +42,7 @@ if (strpos($_SERVER['REQUEST_URI'], 'dashboard.php') !== false) {
             </li>
             <li>
                 <a href="<?php
-                echo $isDashboard ? 'residents/index.php' : '../residents/index.php';
+                echo $isViewOnFolder ? 'residents/index.php' : '../residents/index.php';
                 ?>"
                     class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                     <svg aria-hidden="true"
@@ -53,6 +53,21 @@ if (strpos($_SERVER['REQUEST_URI'], 'dashboard.php') !== false) {
                             d="M298.2 72.6C310.5 61.2 329.5 61.2 341.7 72.6L432 156.3L432 144C432 126.3 446.3 112 464 112L496 112C513.7 112 528 126.3 528 144L528 245.5L565.8 280.6C575.4 289.6 578.6 303.5 573.8 315.7C569 327.9 557.2 336 544 336L528 336L528 512C528 547.3 499.3 576 464 576L176 576C140.7 576 112 547.3 112 512L112 336L96 336C82.8 336 71 327.9 66.2 315.7C61.4 303.5 64.6 289.5 74.2 280.6L298.2 72.6zM376 320C376 289.1 350.9 264 320 264C289.1 264 264 289.1 264 320C264 350.9 289.1 376 320 376C350.9 376 376 350.9 376 320zM208 496C208 504.8 215.2 512 224 512L416 512C424.8 512 432 504.8 432 496C432 451.8 396.2 416 352 416L288 416C243.8 416 208 451.8 208 496z" />
                     </svg>
                     <span class="ml-3">Residents</span>
+                </a>
+            </li>
+            <li>
+                <a href="<?php
+                echo $isViewOnFolder ? 'users/index.php' : '../users/index.php';
+                ?>"
+                    class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                        fill="currentColor"
+                        viewBox="0 0 640 640"><!--!Font Awesome Free v7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.-->
+                        <path
+                            d="M320 80C377.4 80 424 126.6 424 184C424 241.4 377.4 288 320 288C262.6 288 216 241.4 216 184C216 126.6 262.6 80 320 80zM96 152C135.8 152 168 184.2 168 224C168 263.8 135.8 296 96 296C56.2 296 24 263.8 24 224C24 184.2 56.2 152 96 152zM0 480C0 409.3 57.3 352 128 352C140.8 352 153.2 353.9 164.9 357.4C132 394.2 112 442.8 112 496L112 512C112 523.4 114.4 534.2 118.7 544L32 544C14.3 544 0 529.7 0 512L0 480zM521.3 544C525.6 534.2 528 523.4 528 512L528 496C528 442.8 508 394.2 475.1 357.4C486.8 353.9 499.2 352 512 352C582.7 352 640 409.3 640 480L640 512C640 529.7 625.7 544 608 544L521.3 544zM472 224C472 184.2 504.2 152 544 152C583.8 152 616 184.2 616 224C616 263.8 583.8 296 544 296C504.2 296 472 263.8 472 224zM160 496C160 407.6 231.6 336 320 336C408.4 336 480 407.6 480 496L480 512C480 529.7 465.7 544 448 544L192 544C174.3 544 160 529.7 160 512L160 496z" />
+                    </svg>
+                    <span class="ml-3">Users</span>
                 </a>
             </li>
             <!-- <li>
