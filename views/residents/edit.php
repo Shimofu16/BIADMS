@@ -152,11 +152,7 @@ $barangays = $pdo->query("SELECT * FROM barangays ORDER BY name")->fetchAll();
 
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                                <div>
-                                    <label class="block text-xs font-medium mb-1">Address</label>
-                                    <textarea name="address" rows="2"
-                                        class="w-full p-2 border rounded-md"><?= htmlspecialchars($resident['address']) ?></textarea>
-                                </div>
+                               
 
                                 <div>
                                     <label class="block text-xs font-medium mb-1">Occupation</label>
@@ -164,7 +160,24 @@ $barangays = $pdo->query("SELECT * FROM barangays ORDER BY name")->fetchAll();
                                         value="<?= htmlspecialchars($resident['occupation']) ?>"
                                         class="w-full p-2 border rounded-md">
                                 </div>
+
+                                <div>
+                                    <label class="block text-xs font-medium mb-1">Special Status</label>
+                                    <select name="special_status" class="w-full p-2 border rounded-md">
+                                        <option value="">Select Status</option>
+                                        <?php foreach (['PWD', 'Senior Citizen', 'Pregnant', 'None'] as $status): ?>
+                                            <option value="<?= $status ?>" <?= $resident['special_status'] == $status ? 'selected' : '' ?>>
+                                                <?= $status ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
                             </div>
+                             <div class="mt-4">
+                                    <label class="block text-xs font-medium mb-1">Address</label>
+                                    <textarea name="address" rows="2"
+                                        class="w-full p-2 border rounded-md"><?= htmlspecialchars($resident['address']) ?></textarea>
+                                </div>
                         </div>
 
                         <!-- FAMILY -->
@@ -256,6 +269,18 @@ $barangays = $pdo->query("SELECT * FROM barangays ORDER BY name")->fetchAll();
                                                     value="<?= htmlspecialchars($f['occupation']) ?>"
                                                     class="w-full p-2 text-sm border rounded-md">
                                           </div>
+                                          <div>
+                                                <label class="block text-xs font-medium mb-1">Special Status</label>
+                                                <select name="family[<?= $i ?>][special_status]"
+                                                    class="w-full p-2 text-sm border rounded-md">
+                                                    <option value="">Select Status</option>
+                                                    <?php foreach (['PWD', 'senior_citizen', '4ps_beneficiary', 'None'] as $status): ?>
+                                                        <option value="<?= $status ?>" <?= $f['special_status'] == $status ? 'selected' : '' ?>>
+                                                            <?= $status ?>
+                                                        </option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                          </div>
                                         </div>
                                         <div class="flex items-end">
                                             <button type="button" onclick="this.closest('.family-row').remove()"
@@ -346,12 +371,12 @@ $barangays = $pdo->query("SELECT * FROM barangays ORDER BY name")->fetchAll();
                     <label class="block text-xs font-medium mb-1">Relationship</label>
                     <select name="family[${currentIndex}][relationship]" class="w-full p-2 text-sm border rounded-md">
                         <option value="">Select Relationship</option>
-                        <option value="Spouse">Spouse</option>
-                        <option value="Child">Child</option>
-                        <option value="Father">Father</option>
-                        <option value="Mother">Mother</option>
-                        <option value="Sibling">Sibling</option>
-                        <option value="Grandparent">Grandparent</option>
+                        <option value="spouse">Spouse</option>
+                        <option value="child">Child</option>
+                        <option value="father">Father</option>
+                        <option value="mother">Mother</option>
+                        <option value="sibling">Sibling</option>
+                        <option value="grandparent">Grandparent</option>
                         <option value="Other">Other</option>
                     </select>
                 </div>
@@ -372,6 +397,18 @@ $barangays = $pdo->query("SELECT * FROM barangays ORDER BY name")->fetchAll();
                     <input type="text"
                         name="family[${currentIndex}][occupation]"
                         class="w-full p-2 text-sm border rounded-md">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium mb-1">Special Status</label>
+                    <select name="family[${currentIndex}][special_status]" class="w-full p-2 text-sm border rounded-md">
+                        <option value="">Select Status</option>
+                        <?php foreach (['PWD', 'senior_citizen', '4ps_beneficiary', 'None'] as $status): ?>
+                            <option value="<?= $status ?>">
+                                <?= $status ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
             </div>
             <div class="flex items-end">
@@ -437,6 +474,7 @@ $barangays = $pdo->query("SELECT * FROM barangays ORDER BY name")->fetchAll();
                 contact_number: form.contact_number.value.trim() || null,
                 address: form.address.value.trim() || null,
                 occupation: form.occupation.value.trim() || null,
+                special_status: form.special_status.value || null,
                 family: []
             };
 
@@ -455,7 +493,8 @@ $barangays = $pdo->query("SELECT * FROM barangays ORDER BY name")->fetchAll();
                     birth_date: row.querySelector('[name$="[birth_date]"]')?.value || null,
                     relationship: row.querySelector('[name$="[relationship]"]')?.value.trim() || null,
                     civil_status: row.querySelector('[name$="[civil_status]"]')?.value || null,
-                    occupation: row.querySelector('[name$="[occupation]"]')?.value.trim() || null
+                    occupation: row.querySelector('[name$="[occupation]"]')?.value.trim() || null,
+                    special_status: row.querySelector('[name$="[special_status]"]')?.value || null
                 });
             });
 

@@ -158,7 +158,9 @@ try {
                 'last_name' => 'Last Name',
                 'gender' => 'Gender',
                 'birth_date' => 'Birth Date',
-                'civil_status' => 'Civil Status'
+                'civil_status' => 'Civil Status',
+                'special_status' => 'Special Status',
+                'occupation' => 'Occupation'
             ];
 
             foreach ($required as $field => $label) {
@@ -191,8 +193,9 @@ try {
                 civil_status,
                 contact_number,
                 address,
-                occupation
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                occupation,
+                special_status
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ");
 
                 $stmt->execute([
@@ -206,7 +209,8 @@ try {
                     $data['civil_status'],
                     $data['contact_number'] ?? null,
                     $data['address'] ?? null,
-                    $data['occupation'] ?? null
+                    $data['occupation'] ?? null,
+                    $data['special_status'] ?? null
                 ]);
 
                 $residentId = (int) $pdo->lastInsertId();
@@ -222,8 +226,9 @@ try {
                     birth_date,
                     relationship,
                     civil_status,
-                    occupation
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    occupation,
+                    special_status
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ");
 
                     foreach ($data['family'] as $member) {
@@ -240,7 +245,8 @@ try {
                             $member['birth_date'] ?? null,
                             $member['relationship'] ?? null,
                             $member['civil_status'] ?? null,
-                            $member['occupation'] ?? null
+                            $member['occupation'] ?? null,
+                            $member['special_status'] ?? null
                         ]);
                     }
                 }
@@ -284,7 +290,9 @@ try {
                 'last_name' => 'Last Name',
                 'gender' => 'Gender',
                 'birth_date' => 'Birth Date',
-                'civil_status' => 'Civil Status'
+                'civil_status' => 'Civil Status',
+                'special_status' => 'Special Status',
+                'occupation' => 'Occupation'
             ];
             foreach ($required as $field => $label) {
                 if (empty(trim($data[$field] ?? ''))) {
@@ -314,7 +322,8 @@ try {
                 civil_status = ?,
                 contact_number = ?,
                 address = ?,
-                occupation = ?
+                occupation = ?,
+                special_status = ?
             WHERE id = ?
         ");
 
@@ -330,7 +339,9 @@ try {
                     $data['contact_number'] ?? null,
                     $data['address'] ?? null,
                     $data['occupation'] ?? null,
+                    $data['special_status'] ?? null,
                     (int) $data['resident_id']
+
                 ]);
 
                 // Delete existing family members
@@ -348,8 +359,9 @@ try {
                     birth_date,
                     relationship,
                     civil_status,
-                    occupation
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                    occupation,
+                    special_status
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             ");
 
                     foreach ($data['family'] as $member) {
@@ -364,7 +376,8 @@ try {
                             $member['birth_date'] ?? null,
                             $member['relationship'] ?? null,
                             $member['civil_status'] ?? null,
-                            $member['occupation'] ?? null
+                            $member['occupation'] ?? null,
+                            $member['special_status'] ?? null
                         ]);
                     }
                 }

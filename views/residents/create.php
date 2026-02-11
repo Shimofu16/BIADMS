@@ -129,15 +129,33 @@ $barangays = $barangayStmt->fetchAll();
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                                 <div>
-                                    <label class="block text-sm font-medium mb-1">Address</label>
-                                    <textarea name="address" rows="2"
-                                        class="w-full p-2 text-sm border rounded-md"></textarea>
+                                    <label for="block text-sm font-medium mb-1">
+                                        PWD/ Senior Citizen/ 4Ps Beneficiary
+                                    </label>
+                                    <select name="special_status" class="w-full p-2 text-sm border rounded-md">
+                                        <option value="">Select</option>
+                                        <?php
+                                        foreach (['PWD' => 'PWD', 'Senior Citizen' => 'Senior Citizen', '4Ps Beneficiary' => '4Ps Beneficiary'] as $value => $label): ?>
+                                            <option value="<?= $value ?>">
+                                                <?= $label ?>
+                                            </option>
+                                        <?php endforeach; ?>
+
+                                    </select>
                                 </div>
+
 
                                 <div>
                                     <label class="block text-sm font-medium mb-1">Occupation</label>
                                     <input type="text" name="occupation" class="w-full p-2 text-sm border rounded-md">
                                 </div>
+
+
+                            </div>
+                            <div class="mt-4">
+                                <label class="block text-sm font-medium mb-1">Address</label>
+                                <textarea name="address" rows="2"
+                                    class="w-full p-2 text-sm border rounded-md"></textarea>
                             </div>
                         </div>
 
@@ -232,12 +250,12 @@ $barangays = $barangayStmt->fetchAll();
     <select name="family[${currentIndex}][relationship]"
         class="w-full p-2 text-sm border rounded-md">
         <option value="">Select Relationship</option>
-        <option value="Spouse">Spouse</option>
-        <option value="Child">Child</option>
-        <option value="Father">Father</option>
-        <option value="Mother">Mother</option>
-        <option value="Sibling">Sibling</option>
-        <option value="Grandparent">Grandparent</option>
+        <option value="spouse">Spouse</option>
+        <option value="child">Child</option>
+        <option value="father">Father</option>
+        <option value="mother">Mother</option>
+        <option value="sibling">Sibling</option>
+        <option value="grandparent">Grandparent</option>
         <option value="Other">Other</option>
     </select>
 </div>
@@ -260,6 +278,22 @@ $barangays = $barangayStmt->fetchAll();
                 placeholder="Occupation"
                 class="w-full p-2 text-sm border rounded-md">
         </div>
+        <div>
+                                            <label for="block text-sm font-medium mb-1">
+                                                PWD/ Senior Citizen/ 4Ps Beneficiary
+                                            </label>
+                                            <select name="family[${currentIndex}][special_status]" class="w-full p-2 text-sm border rounded-md">
+                                                <option value="">Select</option>
+                                                <?php
+                                                foreach (['PWD' => 'PWD', 'Senior Citizen' => 'Senior Citizen', '4Ps Beneficiary' => '4Ps Beneficiary'] as $value => $label): ?>
+                                                    <option value="<?= $value ?>">
+                                                        <?= $label ?>
+                                                    </option>
+                                                    <?php endforeach; ?>
+                                            </select>
+
+
+                  </div>
                   </div>
         <div class="flex items-end">
             <button type="button"
@@ -325,6 +359,7 @@ $barangays = $barangayStmt->fetchAll();
                 contact_number: form.contact_number.value.trim() || null,
                 address: form.address.value.trim() || null,
                 occupation: form.occupation.value.trim() || null,
+                special_status: form.special_status.value || null,
                 family: []
             };
 
@@ -343,7 +378,8 @@ $barangays = $barangayStmt->fetchAll();
                     birth_date: row.querySelector('[name$="[birth_date]"]')?.value || null,
                     relationship: row.querySelector('[name$="[relationship]"]')?.value.trim() || null,
                     civil_status: row.querySelector('[name$="[civil_status]"]')?.value || null,
-                    occupation: row.querySelector('[name$="[occupation]"]')?.value.trim() || null
+                    occupation: row.querySelector('[name$="[occupation]"]')?.value.trim() || null,
+                    special_status: row.querySelector('[name$="[special_status]"]')?.value || null
                 });
             });
 
