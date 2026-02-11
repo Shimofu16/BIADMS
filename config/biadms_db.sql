@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 17, 2026 at 08:44 AM
+-- Generation Time: Feb 11, 2026 at 01:20 PM
 -- Server version: 8.4.3
 -- PHP Version: 8.3.28
 
@@ -65,6 +65,7 @@ CREATE TABLE `family_members` (
   `relationship` enum('spouse','child','parent','sibling','grandparent','relative','other') NOT NULL,
   `civil_status` enum('single','married','widowed','separated') DEFAULT 'single',
   `occupation` varchar(150) DEFAULT NULL,
+  `special_status` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -72,9 +73,11 @@ CREATE TABLE `family_members` (
 -- Dumping data for table `family_members`
 --
 
-INSERT INTO `family_members` (`id`, `resident_id`, `first_name`, `middle_name`, `last_name`, `gender`, `birth_date`, `relationship`, `civil_status`, `occupation`, `created_at`) VALUES
-(1, 29, 'Rafael', 'Brett Hoffman', 'Osborne', 'female', '1981-05-01', 'grandparent', 'widowed', 'Ipsum ut qui rem do', '2026-01-16 02:26:04'),
-(2, 30, 'Audrey', 'Basia Dunn', 'Talley', 'male', '1984-10-08', 'other', 'married', 'Ipsum in incididunt', '2026-01-16 03:31:32');
+INSERT INTO `family_members` (`id`, `resident_id`, `first_name`, `middle_name`, `last_name`, `gender`, `birth_date`, `relationship`, `civil_status`, `occupation`, `special_status`, `created_at`) VALUES
+(3, 2, 'Vielka', 'Karina Gregory', 'Acosta', 'male', '1970-05-29', 'child', 'married', 'Excepturi debitis no', 'pwd', '2026-02-11 07:08:10'),
+(4, 2, 'Brielle', 'Breanna Franks', 'Langley', 'male', '2011-08-19', 'spouse', 'widowed', 'Porro consequuntur q', 'pwd', '2026-02-11 07:08:10'),
+(5, 4, 'Alea', 'Neil Hinton', 'Turner', 'female', '1995-03-17', 'sibling', 'married', 'Cupiditate magnam ad', 'None', '2026-02-11 07:53:13'),
+(6, 4, 'Kendall', 'Regan Black', 'Wilcox', 'female', '2022-07-10', 'child', 'married', 'Saepe distinctio Bl', 'senior_citizen', '2026-02-11 07:53:13');
 
 -- --------------------------------------------------------
 
@@ -97,18 +100,17 @@ CREATE TABLE `residents` (
   `occupation` varchar(150) DEFAULT NULL,
   `created_by` int UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `special_status` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `residents`
 --
 
-INSERT INTO `residents` (`id`, `household_no`, `barangay_id`, `first_name`, `middle_name`, `last_name`, `gender`, `birth_date`, `civil_status`, `contact_number`, `address`, `occupation`, `created_by`, `created_at`, `updated_at`) VALUES
-(1, 'Voluptates nemo quae', 1, 'Holmes', 'Baker Huber', 'Hill', 'female', '1999-10-13', 'widowed', '419', 'Qui id deserunt eaqu', 'Consectetur voluptat', NULL, '2026-01-15 14:26:14', '2026-01-15 14:26:14'),
-(2, 'Eaque ut alias tenet', 1, 'Jack', 'Steven Chandler', 'Rogers', 'male', '1981-04-03', 'widowed', '996', 'Aut ut nisi ex tempo', 'Ea qui ipsum volupta', NULL, '2026-01-15 14:42:22', '2026-01-15 14:42:22'),
-(29, 'Sed ad soluta id co', 1, 'Jana', 'Signe Gallegos', 'Wall', 'female', '2019-05-18', 'single', '32', 'Et eaque ea est moll', 'Soluta vel adipisci', NULL, '2026-01-16 02:26:04', '2026-01-16 02:26:04'),
-(30, 'Praesentium non dolo', 1, 'Meghan', 'Honorato Goodwin', 'Gillespie', 'male', '2025-10-29', 'widowed', '426', 'Blanditiis amet dui', 'Laudantium voluptat', NULL, '2026-01-16 03:31:32', '2026-01-16 03:31:32');
+INSERT INTO `residents` (`id`, `household_no`, `barangay_id`, `first_name`, `middle_name`, `last_name`, `gender`, `birth_date`, `civil_status`, `contact_number`, `address`, `occupation`, `created_by`, `created_at`, `updated_at`, `special_status`) VALUES
+(2, 'Quas officia ipsam c', 3, 'Cassady', 'Kyla Norris', 'Miller', 'female', '1994-04-17', 'widowed', '445', 'Deserunt commodo cum', 'Ut omnis dolores dol', NULL, '2026-02-11 07:08:10', '2026-02-11 07:08:10', '4ps_beneficiary'),
+(4, 'Repudiandae praesent', 3, 'Bernard', 'Joshua Harrison', 'Peck', 'female', '2004-11-18', 'single', '422', 'Rem elit quis et de', 'Exercitation alias c', NULL, '2026-02-11 07:53:12', '2026-02-11 07:53:12', 'PWD');
 
 -- --------------------------------------------------------
 
@@ -123,6 +125,7 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `image` varchar(255) DEFAULT NULL,
   `role` enum('admin','barangay') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'barangay',
+  `barangay_id` int UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -131,8 +134,10 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `image`, `role`, `created_at`, `updated_at`) VALUES
-(1, 'administrator', 'administrator@app.com', '$2y$10$m2ITl/1fsvj2r6medvc4gOE/RKtNuyzIGt.lZPbfh8BcyEJs6SeSa', NULL, 'admin', '2026-01-12 00:03:22', '2026-01-12 00:06:14');
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `image`, `role`, `barangay_id`, `created_at`, `updated_at`) VALUES
+(1, 'administrator', 'administrator@app.com', '$2y$10$m2ITl/1fsvj2r6medvc4gOE/RKtNuyzIGt.lZPbfh8BcyEJs6SeSa', NULL, 'admin', NULL, '2026-01-12 00:03:22', '2026-01-12 00:06:14'),
+(2, 'barangay admin', 'baarangay_admin@app.com', '$2y$10$m2ITl/1fsvj2r6medvc4gOE/RKtNuyzIGt.lZPbfh8BcyEJs6SeSa', NULL, 'barangay', 1, '2026-01-25 13:11:04', '2026-01-25 13:28:01'),
+(3, 'barangay admin 2', 'barangay_admin2@app.com', '$2y$10$m2ITl/1fsvj2r6medvc4gOE/RKtNuyzIGt.lZPbfh8BcyEJs6SeSa', NULL, 'barangay', 2, '2026-01-25 14:38:04', '2026-01-25 14:38:04');
 
 --
 -- Indexes for dumped tables
@@ -166,7 +171,8 @@ ALTER TABLE `residents`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`);
+  ADD UNIQUE KEY `email` (`email`),
+  ADD KEY `idx_users_barangay_id` (`barangay_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -182,19 +188,19 @@ ALTER TABLE `barangays`
 -- AUTO_INCREMENT for table `family_members`
 --
 ALTER TABLE `family_members`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `residents`
 --
 ALTER TABLE `residents`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
@@ -212,6 +218,12 @@ ALTER TABLE `family_members`
 ALTER TABLE `residents`
   ADD CONSTRAINT `fk_resident_barangay` FOREIGN KEY (`barangay_id`) REFERENCES `barangays` (`id`) ON DELETE RESTRICT,
   ADD CONSTRAINT `fk_resident_user` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE SET NULL;
+
+--
+-- Constraints for table `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `fk_users_barangay` FOREIGN KEY (`barangay_id`) REFERENCES `barangays` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
