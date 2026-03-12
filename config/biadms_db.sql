@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 11, 2026 at 01:20 PM
+-- Generation Time: Mar 12, 2026 at 12:53 PM
 -- Server version: 8.4.3
 -- PHP Version: 8.3.28
 
@@ -20,6 +20,55 @@ SET time_zone = "+00:00";
 --
 -- Database: `biadms_db`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ayuda_distributions`
+--
+
+CREATE TABLE `ayuda_distributions` (
+  `id` int UNSIGNED NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` text,
+  `eligibility` text NOT NULL,
+  `distribution_date` date NOT NULL,
+  `start_time` time DEFAULT NULL,
+  `end_time` time DEFAULT NULL,
+  `barangay_id` int UNSIGNED NOT NULL,
+  `venue` varchar(255) DEFAULT NULL,
+  `budget_amount` decimal(12,2) DEFAULT NULL,
+  `source_of_funds` varchar(255) DEFAULT NULL,
+  `total_target_beneficiaries` int UNSIGNED DEFAULT '0',
+  `total_actual_beneficiaries` int UNSIGNED DEFAULT '0',
+  `status` enum('planned','ongoing','completed','cancelled') DEFAULT 'planned',
+  `created_by` int UNSIGNED DEFAULT NULL,
+  `updated_by` int UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `ayuda_distributions`
+--
+
+INSERT INTO `ayuda_distributions` (`id`, `title`, `description`, `eligibility`, `distribution_date`, `start_time`, `end_time`, `barangay_id`, `venue`, `budget_amount`, `source_of_funds`, `total_target_beneficiaries`, `total_actual_beneficiaries`, `status`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+(1, 'Consequatur vel volu', 'Ipsa fugiat nihil', 'special_beneficiaries', '1984-07-26', '12:45:00', '07:12:00', 11, 'Ratione laborum Cup', 37.00, 'Corrupti vero volup', 17, 14, 'planned', NULL, NULL, '2026-03-09 06:19:31', '2026-03-09 06:19:31');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ayuda_recipients`
+--
+
+CREATE TABLE `ayuda_recipients` (
+  `id` int UNSIGNED NOT NULL,
+  `ayuda_id` int UNSIGNED NOT NULL,
+  `resident_id` int UNSIGNED NOT NULL,
+  `received_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `received_by` int UNSIGNED DEFAULT NULL,
+  `remarks` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -144,6 +193,21 @@ INSERT INTO `users` (`id`, `name`, `email`, `password`, `image`, `role`, `barang
 --
 
 --
+-- Indexes for table `ayuda_distributions`
+--
+ALTER TABLE `ayuda_distributions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_ayuda_barangay` (`barangay_id`);
+
+--
+-- Indexes for table `ayuda_recipients`
+--
+ALTER TABLE `ayuda_recipients`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_claim` (`ayuda_id`,`resident_id`),
+  ADD KEY `fk_recipient_resident` (`resident_id`);
+
+--
 -- Indexes for table `barangays`
 --
 ALTER TABLE `barangays`
@@ -179,6 +243,18 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `ayuda_distributions`
+--
+ALTER TABLE `ayuda_distributions`
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `ayuda_recipients`
+--
+ALTER TABLE `ayuda_recipients`
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `barangays`
 --
 ALTER TABLE `barangays`
@@ -205,6 +281,19 @@ ALTER TABLE `users`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `ayuda_distributions`
+--
+ALTER TABLE `ayuda_distributions`
+  ADD CONSTRAINT `fk_ayuda_barangay` FOREIGN KEY (`barangay_id`) REFERENCES `barangays` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `ayuda_recipients`
+--
+ALTER TABLE `ayuda_recipients`
+  ADD CONSTRAINT `fk_recipient_ayuda` FOREIGN KEY (`ayuda_id`) REFERENCES `ayuda_distributions` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_recipient_resident` FOREIGN KEY (`resident_id`) REFERENCES `residents` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `family_members`
