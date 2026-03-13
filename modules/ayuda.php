@@ -205,6 +205,112 @@ try {
             exit;
 
             break;
+        case 'update_ayuda':
+            if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Invalid request method.'
+                ]);
+                exit;
+            }
+
+            try {
+
+                $id = (int) ($_POST['id'] ?? 0);
+
+                if ($id <= 0) {
+                    echo json_encode([
+                        'success' => false,
+                        'message' => 'Invalid Ayuda ID.'
+                    ]);
+                    exit;
+                }
+
+                // Collect form data
+                $title = trim($_POST['title'] ?? '');
+                $description = trim($_POST['description'] ?? '');
+                $eligibility = $_POST['eligibility'] ?? '';
+                $distribution_date = $_POST['distribution_date'] ?? null;
+                $start_time = $_POST['start_time'] ?? null;
+                $end_time = $_POST['end_time'] ?? null;
+                $barangay_id = $_POST['barangay_id'] ?? null;
+                $venue = trim($_POST['venue'] ?? '');
+                $budget_amount = $_POST['budget_amount'] ?? 0;
+                $source_of_funds = trim($_POST['source_of_funds'] ?? '');
+                $target = $_POST['total_target_beneficiaries'] ?? 0;
+                $actual = $_POST['total_actual_beneficiaries'] ?? 0;
+                $status = $_POST['status'] ?? 'planned';
+
+                // Basic validation
+                if (!$title || !$distribution_date) {
+                    echo json_encode([
+                        'success' => false,
+                        'message' => 'Required fields are missing.'
+                    ]);
+                    exit;
+                }
+
+                // Optional rule: actual beneficiaries cannot exceed target
+                if ($actual > $target) {
+                    echo json_encode([
+                        'success' => false,
+                        'message' => 'Actual beneficiaries cannot exceed target beneficiaries.'
+                    ]);
+                    exit;
+                }
+
+                $stmt = $pdo->prepare("
+            UPDATE ayuda_distributions
+            SET
+                title = :title,
+                description = :description,
+                eligibility = :eligibility,
+                distribution_date = :distribution_date,
+                start_time = :start_time,
+                end_time = :end_time,
+                barangay_id = :barangay_id,
+                venue = :venue,
+                budget_amount = :budget_amount,
+                source_of_funds = :source_of_funds,
+                total_target_beneficiaries = :target,
+                total_actual_beneficiaries = :actual,
+                status = :status,
+                updated_at = NOW()
+            WHERE id = :id
+        ");
+
+                $stmt->execute([
+                    ':id' => $id,
+                    ':title' => $title,
+                    ':description' => $description,
+                    ':eligibility' => $eligibility,
+                    ':distribution_date' => $distribution_date,
+                    ':start_time' => $start_time,
+                    ':end_time' => $end_time,
+                    ':barangay_id' => $barangay_id,
+                    ':venue' => $venue,
+                    ':budget_amount' => $budget_amount,
+                    ':source_of_funds' => $source_of_funds,
+                    ':target' => $target,
+                    ':actual' => $actual,
+                    ':status' => $status
+                ]);
+
+                echo json_encode([
+                    'success' => true,
+                    'message' => 'Ayuda distribution updated successfully.'
+                ]);
+
+            } catch (PDOException $e) {
+
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Database error.',
+                    'error' => $e->getMessage()
+                ]);
+            }
+
+            break;
         default:
             echo json_encode(['error' => 'Invalid action']);
     }

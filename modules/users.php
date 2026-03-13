@@ -27,7 +27,7 @@ try {
                 ? (int) $_GET['barangay_id']
                 : null;
 
-           
+
             $whereParts = ["u.role != 'admin'"];
             $params = [];
 
@@ -58,7 +58,7 @@ try {
             $countStmt->execute();
             $total = (int) $countStmt->fetchColumn();
 
-     
+
             $sql = "
                 SELECT u.*, b.name AS barangay_name
                 FROM users u
@@ -96,6 +96,109 @@ try {
 
             break;
 
+        case 'store_user':
+
+            if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Invalid request method'
+                ]);
+                exit;
+            }
+
+            $name = trim($_POST['name']);
+            $email = trim($_POST['email']);
+            $role = 'barangay';
+            $barangay_id = $_POST['barangay_id'];
+            $password = '';
+
+            $barangay = $pdo->prepare("SELECT name FROM barangays WHERE id = :id");
+            $barangay->bindValue(':id', $barangay_id, PDO::PARAM_INT);
+            $barangay->execute();
+            if ($barangay->rowCount() === 0) {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Selected barangay does not exist.'
+                ]);
+                exit;
+            }
+
+            $barangay_name = strtolower($barangay->fetchColumn());
+            $password = password_hash($barangay_name . '_default_password', PASSWORD_DEFAULT);
+
+            if (empty($name) || empty($email) || empty($barangay_id)) {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'All fields are required.'
+                ]);
+            }
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Invalid email format.'
+                ]);
+                exit;
+            }
+
+
+
+            $stmt = $pdo->prepare("INSERT INTO users (name, email, password, role, barangay_id) VALUES (:name, :email, :password, :role, :barangay_id)");
+            $stmt->bindValue(':name', $name, PDO::PARAM_STR);
+            $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+            $stmt->bindValue(':password', $password, PDO::PARAM_STR);
+            $stmt->bindValue(':role', $role, PDO::PARAM_STR);
+            $stmt->bindValue(':barangay_id', $barangay_id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            echo json_encode([
+                'success' => true,
+                'message' => 'User created successfully.'
+            ]);
+
+            break;
+
+        case 'delete_user':
+
+            if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Invalid request method'
+                ]);
+                exit;
+            }
+
+            $user_id = (int) ($_POST['id'] ?? $_GET['id'] ?? 0);
+
+            if ($user_id <= 0) {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Invalid user ID.'
+                ]);
+                exit;
+            }
+
+            try {
+
+                $stmt = $pdo->prepare("DELETE FROM users WHERE id = :id");
+                $stmt->bindValue(':id', $user_id, PDO::PARAM_INT);
+                $stmt->execute();
+
+                echo json_encode([
+                    'success' => true,
+                    'message' => 'User deleted successfully.'
+                ]);
+
+            } catch (PDOException $e) {
+
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Database error',
+                    'error' => $e->getMessage()
+                ]);
+
+            }
+            break;
+
         default:
             echo json_encode([
                 'success' => false,
@@ -106,9 +209,8 @@ try {
 
 } catch (Throwable $e) {
 
-    // 🔥 Show real error while debugging
     echo json_encode([
         'success' => false,
-        'error' => $e->getMessage()
+        'message' => $e->getMessage()
     ]);
 }

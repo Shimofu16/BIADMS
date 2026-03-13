@@ -47,7 +47,7 @@ $barangays = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             <div class="relative overflow-x-auto shadow-xs rounded-md border border-default">
                 <div class="p-6 bg-white">
-                    <form action="../../modules/ayuda.php?action=store_ayuda" method="POST" id="ayudaForm"
+                    <form  method="POST" id="ayudaForm"
                         enctype="multipart/form-data" class="space-y-8">
 
                         <!-- ================= BASIC INFORMATION ================= -->

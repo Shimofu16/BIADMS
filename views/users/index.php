@@ -128,11 +128,9 @@ $barangays = $barangayStmt->fetchAll(PDO::FETCH_ASSOC);
                         <td class="px-6 py-4">${u.barangay_name}</td>
 
                         <td class="px-6 py-4">
-                        
-                            <button
-                                onclick="location.href='edit.php?id=${u.id}'"
-                                class="px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                                Edit
+                            <button onclick="deleteUser(${u.id})"
+                                class="px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700 transition">
+                                Delete
                             </button>
                         </td>
                     </tr>`;
@@ -141,6 +139,54 @@ $barangays = $barangayStmt->fetchAll(PDO::FETCH_ASSOC);
         })
     </script>
 
+    <script>
+        async function deleteUser(id) {
+
+            if (!confirm('Are you sure you want to delete this user?')) return;
+
+            try {
+
+                const response = await fetch('../../modules/users.php?action=delete_user', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `id=${id}`
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Deleted',
+                        text: result.message || 'User deleted successfully.'
+                    }).then(() => {
+                            window.location.reload();
+                    });
+
+                } else {
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: result.message || 'Delete failed.'
+                    });
+
+                }
+
+            } catch (error) {
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error.message || 'Unexpected error occurred.'
+                });
+
+            }
+        }
+    </script>
 </body>
 
 </html>
